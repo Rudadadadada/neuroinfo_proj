@@ -1,5 +1,5 @@
 import flask
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import os
 import torchxrayvision as xrv
 import torch
@@ -39,9 +39,17 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@app.route("/")
+def index():
+    return render_template("upload.html")
+
+
 @app.route("/predict", methods=["POST"])
 def predict():
-    # Проверяем, есть ли файл в запросе
     if 'file' not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
@@ -50,19 +58,15 @@ def predict():
         filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filename)
 
-        # Загрузка изображения
         img = Image.open(filename).convert('L')
         img = np.array(img.resize((224, 224)))
 
-        # Подготовка изображения
         img = img / 255.0
         img = torch.tensor(img).unsqueeze(0).unsqueeze(0).float()
 
-        # Прогнозирование
         with torch.no_grad():
             preds = model(img)
 
-        # Формирование ответа (тут ключ - заболевание, значение - вероятность заболевания)
         results = {pathology: float(pred) for pathology, pred in zip(model.pathologies, preds[0])}
 
         most_likely_disease = ""
@@ -81,7 +85,6 @@ def predict():
 
     return jsonify({"error": "Invalid file type"}), 400
 
-
 if __name__ == "__main__":
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5001, debug=True) 

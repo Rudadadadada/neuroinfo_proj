@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диагностика заболеваний лёгких</title>
+</head>
+<body>
+
+<h2>Загрузите рентгеновский снимок</h2>
+
+<form id="uploadForm">
+    <input type="file" id="fileInput" name="file" accept="image/*" required>
+    <button type="submit">Отправить</button>
+</form>
+
+<p id="responseText"></p>
+
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        
+        const fileInput = document.getElementById('fileInput');
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('Ошибка сети');
+            }
+            
+            const text = await response.text();
+            document.getElementById('responseText').innerText = text;
+        } catch (error) {
+            document.getElementById('responseText').innerText = 'Произошла ошибка: ' + error.message;
+        }
+    });
+</script>
+
+</body>
+</html>
