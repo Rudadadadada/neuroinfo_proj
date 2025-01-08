@@ -4,7 +4,7 @@
 
 ## Try it here
 
-Сервер равзернут в [cloud.ru](https://cloud.ru/) на ВМке. Здесь можно попробовать диагностировать болезнь: http://176.108.255.249:5001/
+Сервер развернут в [cloud.ru](https://cloud.ru/) на ВМке (ID c28e341c-a4eb-496c-8b0b-527b72b46c5f). Здесь можно попробовать диагностировать болезнь: http://176.108.255.249:5001/
 
 ## Подробное описание проекта
 Система представляет собой комплексное программное решение, предназначенное для автоматизированного анализа рентгеновских снимков легких с целью выявления различных патологий. Основной функционал системы включает:
@@ -80,36 +80,6 @@
 - Предобученные модели: Готовые модели для рентгеновских снимков
 - Точность: Высокая точность на медицинских данных
 
-## Сетевая архитектура
-
-### DMZ (Demilitarized Zone)
-- Nginx как reverse proxy
-  - SSL/TLS терминация
-  - Rate limiting
-  - Basic auth
-- AWS Application Load Balancer
-  - Автомасштабирование
-  - Health checks
-  - SSL/TLS
-- Web Application Firewall
-  - ModSecurity правила
-  - Anti-DDoS защита
-  - IP фильтрация
-
-### Secure Zone
-- ML Service
-  - Изолированная сеть
-  - Доступ только через API Gateway
-  - Мониторинг производительности
-- Database Cluster
-  - Master-Slave репликация
-  - Автоматическое резервное копирование
-  - Шифрование данных
-- Storage Systems
-  - Географическое репликация
-  - Версионирование
-  - Шифрование at rest
-
 ## API Endpoints
 
 ### Prediction Endpoint
@@ -164,6 +134,38 @@ Parameters:
   - GPU кластеризация
   - Балансировка нагрузки
 
+
+### Сетевая архитектура
+
+#### DMZ (Demilitarized Zone)
+- Nginx как reverse proxy
+  - SSL/TLS терминация
+  - Rate limiting
+  - Basic auth
+- AWS Application Load Balancer
+  - Автомасштабирование
+  - Health checks
+  - SSL/TLS
+- Web Application Firewall
+  - ModSecurity правила
+  - Anti-DDoS защита
+  - IP фильтрация
+
+#### Secure Zone
+- ML Service
+  - Изолированная сеть
+  - Доступ только через API Gateway
+  - Мониторинг производительности
+- Database Cluster
+  - Master-Slave репликация
+  - Автоматическое резервное копирование
+  - Шифрование данных
+- Storage Systems
+  - Географическое репликация
+  - Версионирование
+  - Шифрование at rest
+
+
 ### Интеграция с медицинскими системами
 
 #### Поддержка медицинских стандартов
@@ -192,8 +194,8 @@ Parameters:
 
 - Боташев Анзор
   - Backend Developer
-  - API разработка
-  - Интеграции
+  - Frontend
+  - Devops
 
 - Люгге Томас
   - Backend Developer
